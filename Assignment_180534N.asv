@@ -1,0 +1,11 @@
+close all
+clear all
+clc
+a = [1 2 0];
+b = [4 9 0];
+
+p,v = generate_trajectory(a,b)
+
+
+
+
