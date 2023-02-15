@@ -1,8 +1,8 @@
 close all
 clear all
 clc
-a = [1 4 0];
-b = [10 15 0];
+a = [1 14 0];
+b = [10 5 0];
 
 [p,v] = generate_trajectory(a,b);
 

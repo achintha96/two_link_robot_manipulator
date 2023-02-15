@@ -1,25 +1,10 @@
 function [position_vector,velocity_vector] = generate_trajectory(initial_pos,final_pos)
-% delta_pos = final_pos - initial_pos;
-% displacement = sqrt(sum(delta_pos.*delta_pos))
-% max_velocity = displacement/time;
-
 %% Trajectory generation
 clc
 error=0;
 
-x_1 = initial_pos(1,1); %x coordinate of begining in millimeters
-y_1 = initial_pos(1,2); %y coordinate of begining in millimeters
-z_1 = initial_pos(1,3); %z coordinate of begining in millimeters
-
-x_2 = final_pos(1,1); %x coordinate of destination in millimeters
-y_2 = final_pos(1,2); %y coordinate of destination in millimeters
-z_2 = final_pos(1,3); %z coordinate of destination in millimeters
-
-delta_x=(x_2-x_1); %difference between x coordinates
-delta_y=(y_2-y_1); %difference between y coordinates
-delta_z=(z_2-z_1); %difference between z coordinates
-
-displacement = round(((delta_x^2)+(delta_y^2)+(delta_z^2))^0.5,2); % displacement between two points accurate to 2 decimal points in millimeters
+delta_pos = final_pos' - initial_pos';
+displacement = sqrt(sum(delta_pos.*delta_pos));
 
 acc_max = 10^(-4); % 100 mm/S^2 =10^-4 mm/mS^2
 dcc_max = -1*acc_max; % always deffine a negative value
@@ -51,7 +36,6 @@ if (error==0)
                 dcc=0;
             else
                 dcc = -1*(current_feedrate-terminal_vel)/dcc_time;
-                %dcc = (-2*min_dcc_dist)/(dcc_time^2);
             end
             dcc_dist = round(-0.5*dcc*(dcc_time^2),2);
             acc_dist = displacement-uni_vel_dist-dcc_dist;
@@ -59,10 +43,8 @@ if (error==0)
             acc_time = ceil(acc_time);
             if (acc_time==0)
                 acc=0;
-                %current_vel=current_feedrate;
             else
                 acc = (current_feedrate-terminal_vel)/acc_time;
-                %acc = (2*acc_dist)/(acc_time^2);
             end
             total_time = acc_time + uni_vel_time + dcc_time;
             temp_velocity_profile = zeros(1,total_time+1);
@@ -73,8 +55,7 @@ if (error==0)
             end
             current_vel=current_vel-acc;
             temp_velocity_profile(acc_time+2:total_time+1-dcc_time)=current_vel; %unifrom velocity
-            %current_vel
-            %t
+            
             for t=total_time+1-dcc_time:total_time+1 %decelation generating loop
                 temp_velocity_profile(t)=current_vel;
                 current_vel=current_vel+dcc;
@@ -99,7 +80,6 @@ if (error==0)
             acc_time = ceil(acc_time);
             if (acc_time==0)
                 acc=0;
-                %current_vel=current_feedrate;
             else
                 acc = (current_feedrate-terminal_vel)/acc_time;
             end
@@ -111,8 +91,7 @@ if (error==0)
                 current_vel=current_vel+acc;
             end
             current_vel=current_vel-acc;
-            %current_vel
-            %t
+            
             for t=total_time+1-dcc_time:total_time+1 %decelation generating loop
                 temp_velocity_profile(t)=current_vel;
                 current_vel=current_vel+dcc;
@@ -133,18 +112,14 @@ current=0;
 for t=1:total_time+1
    current=current+temp_velocity_profile(t);
    distance=current/displacement;
-   position_vector(1,t)=x_1+distance*delta_x;
-   position_vector(2,t)=y_1+distance*delta_y;
-   position_vector(3,t)=z_1+distance*delta_z;
+   position_vector(:,t) = initial_pos' + distance * delta_pos;
 end
 
 
 %% generating velocity profile
 p = position_vector;
-c = [x_1; y_1; z_1];
-d = [x_2; y_2; z_2];
-b = [c p];
-p = [p d];
+b = [initial_pos' p];
+p = [p final_pos'];
 velocity_vector = p-b;
 velocity_vector = velocity_vector(:,1:total_time+1);
 end
