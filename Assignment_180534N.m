@@ -18,6 +18,8 @@ no_pts = length(path);
 centripetal_torque_1 = [0];
 centripetal_torque_2 = [0];
 
+coriolis_torque_1 = [0];
+coriolis_torque_2 = [0];
 
 hold on
 grid on
@@ -43,9 +45,14 @@ for i=1:no_pts
         [X1, Y1, X2, Y2] = find_FK(theta_1, theta_2, L_1, L_2);
         
         [omega_1, omega_2] = find_AngularVelocity(theta_1, theta_2, v_x, v_y, L_1, L_2);
+        
         [centripetal_1, centripetal_2] = find_CentripetalTorque(theta_1,theta_2,omega_1,omega_2,L_1,L_2,M_1,M_2);
         centripetal_torque_1 = [centripetal_torque_1 centripetal_1];
         centripetal_torque_2 = [centripetal_torque_2 centripetal_2];
+        
+        [coriolis_1, coriolis_2] = find_CoriolisTorque(theta_1,theta_2,omega_1,omega_2,L_1,L_2,M_1,M_2);
+        coriolis_torque_1 = [coriolis_torque_1 coriolis_1];
+        coriolis_torque_2 = [coriolis_torque_2 coriolis_2];
         
         axis_lim = L_1+L_2+1;
         axis([-axis_lim axis_lim -axis_lim axis_lim])
@@ -65,9 +72,23 @@ end
 
 figure
 plot(centripetal_torque_1);
+title ("Centrepetal Torque - Link 1")
+grid on
 
 figure
 plot(centripetal_torque_2);
+title ("Centrepetal Torque - Link 2")
+grid on
+
+figure
+plot(coriolis_torque_1);
+title ("Coriolis Torque - Link 1")
+grid on
+
+figure
+plot(coriolis_torque_2);
+title ("Coriolis Torque - Link 2")
+grid on
 
 %plot(x_array,y_array)
 % a = [1 14 0];
