@@ -135,6 +135,16 @@ grid on
 joint_torque_1 = centripetal_torque_1+coriolis_torque_1+gravity_torque_1+inertial_torque_1;
 joint_torque_2 = centripetal_torque_2+coriolis_torque_2+gravity_torque_2+inertial_torque_2;
 
+figure
+plot(joint_torque_1);
+title ("Joint Torque - Link 2")
+grid on
+
+figure
+plot(joint_torque_2);
+title ("Joint Torque - Link 2")
+grid on
+
 %plot(x_array,y_array)
 % a = [1 14 0];
 % b = [10 5 0];
