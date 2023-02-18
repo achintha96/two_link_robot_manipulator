@@ -18,6 +18,11 @@ no_pts = length(path);
 centripetal_torque_1 = [0];
 centripetal_torque_2 = [0];
 
+coriolis_torque_1 = [0];
+coriolis_torque_2 = [0];
+
+gravity_torque_1 = [0];
+gravity_torque_2 = [0];
 
 hold on
 grid on
@@ -48,7 +53,13 @@ for i=1:no_pts
         centripetal_torque_1 = [centripetal_torque_1 centripetal_1];
         centripetal_torque_2 = [centripetal_torque_2 centripetal_2];
         
-        [coriolis]
+        [coriolis_1, coriolis_2] = find_CoriolisTorque(theta_1,theta_2,omega_1,omega_2,L_1,L_2,M_1,M_2);
+        coriolis_torque_1 = [coriolis_torque_1 coriolis_1];
+        coriolis_torque_2 = [coriolis_torque_2 coriolis_2];
+        
+        [gravity_1, gravity_2] = find_GravityTorque(theta_1,theta_2,omega_1,omega_2,L_1,L_2,M_1,M_2);
+        gravity_torque_1 = [gravity_torque_1 gravity_1];
+        gravity_torque_2 = [gravity_torque_2 gravity_2];
         
         axis_lim = L_1+L_2+1;
         axis([-axis_lim axis_lim -axis_lim axis_lim])
@@ -74,6 +85,16 @@ grid on
 figure
 plot(centripetal_torque_2);
 title ("Centrepetal Torque - Link 2")
+grid on
+
+figure
+plot(coriolis_torque_1);
+title ("Coriolis Torque - Link 1")
+grid on
+
+figure
+plot(coriolis_torque_2);
+title ("Coriolis Torque - Link 2")
 grid on
 
 %plot(x_array,y_array)
