@@ -24,6 +24,9 @@ coriolis_torque_2 = [0];
 gravity_torque_1 = [0];
 gravity_torque_2 = [0];
 
+inertial_torque_1 = [0];
+inertial_torque_2 = [0];
+
 prev_omega_1 = 0;
 prev_omega_2 = 0;
 
@@ -67,6 +70,10 @@ for i=1:no_pts
         gravity_torque_1 = [gravity_torque_1 gravity_1];
         gravity_torque_2 = [gravity_torque_2 gravity_2];
         
+        [inertia_1, inertia_2] = find_InertialTorque(theta_1,theta_2,ang_acc_1,ang_acc_2,L_1,L_2,M_1,M_2);
+        inertial_torque_1 = [inertial_torque_1 inertia_1];
+        inertial_torque_2 = [inertial_torque_2 inertia_2];
+        
         axis_lim = L_1+L_2+1;
         axis([-axis_lim axis_lim -axis_lim axis_lim])
         link1 = line([0 X1], [0 Y1], 'linewidth', 2, 'Color', 'red');
@@ -78,6 +85,8 @@ for i=1:no_pts
         pause(0.0001)
         delete(link1)
         delete(link2)
+        prev_omega_1 = omega_1;
+        prev_omega_2 = omega_2;
     end
     %at the end
     start_pt = path(i,:);
@@ -113,6 +122,18 @@ plot(gravity_torque_2);
 title ("Gravity Torque - Link 2")
 grid on
 
+figure
+plot(inertial_torque_1);
+title ("Inertial Torque - Link 1")
+grid on
+
+figure
+plot(inertial_torque_1);
+title ("Inertial Torque - Link 2")
+grid on
+
+joint_torque_1 = centripetal_torque_1+coriolis_torque_1+gravity_torque_1+inertial_torque_1;
+joint_torque_2 = centripetal_torque_2+coriolis_torque_2+gravity_torque_2+inertial_torque_2;
 
 %plot(x_array,y_array)
 % a = [1 14 0];
