@@ -23,16 +23,22 @@ for i=1:no_pts
         x = current_pt(1,1);
         y = current_pt(2,1);
         
-        [theta_1,theta_2] = find_IK(x,y,L_1,L_2);
+        current_v = v(:,j);
+        v_x = current_v(1,1);
+        v_y = current_v(2,1);
+        
+        [theta_1, theta_2] = find_IK(x, y, L_1, L_2);
         %theta_1 = joint_angles(1,1)
         %theta_2 = joint_angles(1,2)
+        [omega_1, omega_2] = find_AngularVelocity(theta_1, theta_2, v_x, v_y, L_1, L_2);
         
-        [X1,Y1,X2,Y2] = find_FK(theta_1,theta_2,L_1,L_2);
+        
+        [X1, Y1, X2, Y2] = find_FK(theta_1, theta_2, L_1, L_2);
         
         axis_lim = L_1+L_2+1;
         axis([-axis_lim axis_lim -axis_lim axis_lim])
-        link1 = line([0 X1], [0 Y1]);
-        link2 = line([X1 X2], [Y1 Y2]);
+        link1 = line([0 X1], [0 Y1], 'linewidth', 2, 'Color', 'red');
+        link2 = line([X1 X2], [Y1 Y2], 'linewidth', 2, 'Color', 'blue');
         if i>1
             plot(X2,Y2,'d','MarkerFaceColor','red','MarkerEdgeColor','red')
             
