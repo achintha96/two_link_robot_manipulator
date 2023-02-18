@@ -11,8 +11,9 @@ no_pts = length(path);
 x_array = [start_pt(1,1)];
 y_array = [start_pt(1,2)];
 hold on
+grid on
 for i=1:no_pts
-    end_pt = path(i,:);
+    end_pt = path(i,:)
     [p,v] = generate_trajectory(start_pt, end_pt);
     %x_array = [x_array p(1,:)];
     %y_array = [y_array p(2,:)];
@@ -28,7 +29,8 @@ for i=1:no_pts
         
         [X1,Y1,X2,Y2] = find_FK(theta_1,theta_2,L_1,L_2);
         
-        axis([-10 20 -10 20])
+        axis_lim = L_1+L_2+1;
+        axis([-axis_lim axis_lim -axis_lim axis_lim])
         link1 = line([0 X1], [0 Y1]);
         link2 = line([X1 X2], [Y1 Y2]);
         if i>1
