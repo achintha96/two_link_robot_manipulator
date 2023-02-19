@@ -1,4 +1,5 @@
 function [theta1,theta2] = find_IK(XE,YE,L_1,L_2)
+%calculating angles for given cartesian coordinate
 
 theta2 = acos((XE^2 + YE^2 - L_1^2 - L_2^2)/(2*L_1*L_2));
 theta1 = atan2(YE,XE) - atan2((L_2*sin(theta2)),(L_1 + L_2*cos(theta2)));

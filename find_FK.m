@@ -1,4 +1,7 @@
 function [X1,Y1,X2,Y2] = find_FK(THETA1,THETA2,L1,L2)
+%calculating link positions.
+%to reduce computational overhead, simplified equations are used instead of
+%homogeneous matrices
 
 X1 = L1*cos(THETA1);
 Y1 = L1*sin(THETA1);

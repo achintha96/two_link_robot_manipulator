@@ -1,5 +1,0 @@
-function [crls1,crls2] = find_CoriolisTorque(t_1,t_2,v_x,v_y,L_1,L_2)
-
-
-end
-

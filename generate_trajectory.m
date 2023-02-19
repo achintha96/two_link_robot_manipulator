@@ -1,6 +1,8 @@
 function [position_vector,velocity_vector] = generate_trajectory(initial_pos,final_pos)
 %% Trajectory generation
-clc
+%generating straightline trajectory between two points in cartesian
+%coordinates
+
 error=0;
 
 delta_pos = final_pos' - initial_pos';
