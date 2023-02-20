@@ -150,7 +150,7 @@ title ("Inertial Torque - Link 1")
 grid on
 
 subplot (2 ,1 ,2)
-plot(inertial_torque_1);
+plot(inertial_torque_2);
 title ("Inertial Torque - Link 2")
 grid on
 
